@@ -102,7 +102,7 @@ public class OutboundRecordController {
                         Map<String, Object> response = new HashMap<>();
                         response.put("code", 400);
                         response.put("message", "库存不足，当前库存: " + currentInventory + ", 需要出库: " + record.getAmount());
-                        return ResponseEntity.status(200).body(response);
+                        return ResponseEntity.status(400).body(response);
                     }
                 } else {
                     log.warn("找不到ID为 {} 的化学品信息", record.getChemicalId());
@@ -110,7 +110,7 @@ public class OutboundRecordController {
                     Map<String, Object> response = new HashMap<>();
                     response.put("code", 400);
                     response.put("message", "找不到指定的化学品");
-                    return ResponseEntity.status(200).body(response);
+                    return ResponseEntity.status(400).body(response);
                 }
             } else {
                 log.error("缺少化学品ID");
@@ -118,7 +118,7 @@ public class OutboundRecordController {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 400);
                 response.put("message", "缺少化学品ID");
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(400).body(response);
             }
             
             // 执行出库操作
@@ -149,7 +149,7 @@ public class OutboundRecordController {
                 response.put("code", 500);
                 response.put("message", "添加出库记录失败");
                 
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(500).body(response);
             }
         } catch (Exception e) {
             log.error("添加出库记录异常", e);
@@ -159,7 +159,7 @@ public class OutboundRecordController {
             response.put("code", 500);
             response.put("message", "添加出库记录失败: " + e.getMessage());
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     
@@ -177,7 +177,7 @@ public class OutboundRecordController {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 404);
                 response.put("message", "找不到指定的化学品");
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(404).body(response);
             }
             
             // 获取库存信息
@@ -203,7 +203,7 @@ public class OutboundRecordController {
             response.put("code", 500);
             response.put("message", "获取库存信息失败: " + e.getMessage());
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     
@@ -229,7 +229,7 @@ public class OutboundRecordController {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 404);
                 response.put("message", "未找到指定的出库记录");
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(404).body(response);
             }
             
             // 记录原始数据，用于计算库存变化
@@ -283,7 +283,7 @@ public class OutboundRecordController {
                     Map<String, Object> response = new HashMap<>();
                     response.put("code", 400);
                     response.put("message", "库存不足，当前库存: " + currentInventory + ", 需要出库: " + amountToCheck);
-                    return ResponseEntity.status(200).body(response);
+                    return ResponseEntity.status(400).body(response);
                 }
             }
             
@@ -350,7 +350,7 @@ public class OutboundRecordController {
                 response.put("code", 500);
                 response.put("message", "更新出库记录失败");
                 
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(500).body(response);
             }
         } catch (Exception e) {
             log.error("更新出库记录异常", e);
@@ -360,7 +360,7 @@ public class OutboundRecordController {
             response.put("code", 500);
             response.put("message", "更新出库记录失败: " + e.getMessage());
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -381,7 +381,7 @@ public class OutboundRecordController {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 404);
                 response.put("message", "未找到指定的出库记录");
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(404).body(response);
             }
             
             // 记录原始出库记录信息，用于恢复库存
@@ -418,7 +418,7 @@ public class OutboundRecordController {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 500);
                 response.put("message", "删除出库记录失败");
-                return ResponseEntity.status(200).body(response);
+                return ResponseEntity.status(500).body(response);
             }
         } catch (Exception e) {
             log.error("删除出库记录异常", e);
@@ -427,7 +427,7 @@ public class OutboundRecordController {
             Map<String, Object> response = new HashMap<>();
             response.put("code", 500);
             response.put("message", "删除出库记录失败: " + e.getMessage());
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -508,7 +508,7 @@ public class OutboundRecordController {
             response.put("code", 500);
             response.put("message", "获取出库记录失败: " + e.getMessage());
             response.put("data", null);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**

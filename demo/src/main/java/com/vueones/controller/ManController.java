@@ -210,7 +210,7 @@ public class ManController {
 
         // 验证性别
         if (man.getGender() != null && !man.getGender().trim().isEmpty() 
-            && !man.getGender().matches("^[男女其他]$")) {
+            && !man.getGender().matches("^(男|女|其他)$")) {
             error.put("message", "性别只能是男、女或其他");
             return error;
         }

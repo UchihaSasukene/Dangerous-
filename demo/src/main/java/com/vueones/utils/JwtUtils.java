@@ -4,9 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+//import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +22,24 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
 
-    // 安全密钥
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    
-    // 过期时间（24小时）
-    private final long expiration = 24 * 60 * 60 * 1000;
+    @Value("${security.jwt.secret:}")
+    private String secretBase64;
+
+    @Value("${security.jwt.expiration:86400000}")
+    private long expiration;
+
+    private SecretKey key;
+
+    @PostConstruct
+    public void init() {
+        if (secretBase64 != null && !secretBase64.trim().isEmpty()) {
+            byte[] secretBytes = Base64.getDecoder().decode(secretBase64.trim());
+            this.key = Keys.hmacShaKeyFor(secretBytes);
+        } else {
+            // 未配置密钥时，生成临时密钥（重启后会失效，不建议生产使用）
+            this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        }
+    }
 
     /**
      * 从令牌中获取用户ID

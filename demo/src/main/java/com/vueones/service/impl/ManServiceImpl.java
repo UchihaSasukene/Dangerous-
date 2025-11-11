@@ -56,6 +56,13 @@ public class ManServiceImpl implements IManService {
      */
     @Override
     public boolean insertMan(Man man) {
+        // 对明文密码进行加密（避免重复加密）
+        if (man.getPassword() != null && !man.getPassword().trim().isEmpty()) {
+            String pwd = man.getPassword().trim();
+            if (!pwd.startsWith("$2a$") && !pwd.startsWith("$2b$") && !pwd.startsWith("$2y$")) {
+                man.setPassword(passwordEncoder.encode(pwd));
+            }
+        }
         return manMapper.insert(man) > 0;
     }
 
@@ -67,6 +74,13 @@ public class ManServiceImpl implements IManService {
      */
     @Override
     public int updateMan(Man man) {
+        // 若提交了密码，则进行加密（避免重复加密）
+        if (man.getPassword() != null && !man.getPassword().trim().isEmpty()) {
+            String pwd = man.getPassword().trim();
+            if (!pwd.startsWith("$2a$") && !pwd.startsWith("$2b$") && !pwd.startsWith("$2y$")) {
+                man.setPassword(passwordEncoder.encode(pwd));
+            }
+        }
         return manMapper.updateMan(man);
     }
 

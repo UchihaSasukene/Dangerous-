@@ -96,7 +96,7 @@ public class UsageRecordController {
             response.put("code", 404);
             response.put("message", "获取使用记录失败");
             response.put("data", null);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(404).body(response);
         }
     }
     /**
@@ -166,7 +166,7 @@ public class UsageRecordController {
             result.put("message", "获取使用记录失败：" + e.getMessage());
             result.put("data", null);
             
-            return ResponseEntity.status(200).body(result);
+            return ResponseEntity.status(500).body(result);
         }
     }
     
@@ -233,7 +233,7 @@ public class UsageRecordController {
             response.put("message", "获取统计数据失败: " + e.getMessage());
             response.put("data", statisticsData);
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     

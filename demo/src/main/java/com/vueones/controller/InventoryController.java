@@ -103,7 +103,7 @@ public class InventoryController {
             response.put("message", "获取库存记录失败: " + e.getMessage());
             response.put("data", null);
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -148,7 +148,7 @@ public class InventoryController {
             response.put("code", 500);
             response.put("message", "获取库存记录失败: " + e.getMessage());
             response.put("data", null);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -182,7 +182,7 @@ public class InventoryController {
             response.put("message", "更新库存数量失败: " + e.getMessage());
             response.put("data", null);
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -206,7 +206,7 @@ public class InventoryController {
             response.put("message", "获取低于预警阈值的库存记录失败: " + e.getMessage());
             response.put("data", null);
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -245,7 +245,7 @@ public class InventoryController {
             response.put("code", 500);
             response.put("message", "获取库存总量失败: " + e.getMessage());
             response.put("data", 0.0);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     
@@ -280,7 +280,7 @@ public class InventoryController {
             response.put("code", 500);
             response.put("message", "入库操作失败: " + e.getMessage());
             response.put("data", null);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     
@@ -315,7 +315,7 @@ public class InventoryController {
             response.put("code", 500);
             response.put("message", "出库操作失败: " + e.getMessage());
             response.put("data", null);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -384,7 +384,7 @@ public class InventoryController {
             response.put("message", "获取统计数据失败: " + e.getMessage());
             response.put("data", null);
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -410,7 +410,7 @@ public class InventoryController {
             response.put("message", "获取历史记录失败: " + e.getMessage());
             response.put("data", null);
             
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
     /**
@@ -484,7 +484,7 @@ public class InventoryController {
             response.put("code", 500);
             response.put("message", "获取盘点数据失败: " + e.getMessage());
             response.put("data", null);
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(500).body(response);
         }
     }
 
