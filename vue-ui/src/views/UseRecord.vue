@@ -124,7 +124,7 @@
           <span>当前页数据汇总</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="calculateSummary">刷新汇总</el-button>
         </div>
-        <el-row :gutter="20">
+        <el-row :gutter="18">
           <el-col :span="8">
             <div class="summary-item">
               <div class="summary-label">记录数量:</div>
@@ -658,16 +658,16 @@ export default {
 }
 
 .pagination-container {
-  margin-top: 20px;
+  margin-top: 18px;
   text-align: right;
 }
 
 .summary-container {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .summary-card {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .summary-item {

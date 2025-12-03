@@ -37,6 +37,7 @@ public class LoginRequest {
     public String toString() {
         return "LoginRequest{" +
                 "email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", userType=" + userType +
                 '}';
     }

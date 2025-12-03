@@ -58,11 +58,12 @@ export default {
       ruleForm2: {
         username: 'admin',
         password: '123456',
-        userType: 0 // 默认为普通用户
+        userType: 1 // 默认为管理员
       },
       rules2: {
-        username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
-        password: [{required: true, message: '请输入密码', trigger: 'blur'}]
+        username: [{required: true, message: '请输入邮箱', trigger: 'blur'}],
+        password: [{required: true, message: '请输入密码', trigger: 'blur'}],
+        userType: [{required: true, message: '请选择用户类型', trigger: 'change'}]
       },
       checked: false
     }
@@ -72,7 +73,7 @@ export default {
       this.$refs.ruleForm2.validate((valid) => {
         if(valid){
           this.logining = true;
-          
+
           // 构建登录请求数据
           const loginData = {
             email: this.ruleForm2.username,
@@ -84,15 +85,21 @@ export default {
           this.$http.post('/user/login', loginData)
             .then(response => {
               this.logining = false;
-              if (response.data.code === 200) {
+              if (response.data && response.data.code === 200) {
                 // 登录成功
-                const userData = response.data.data.user;
-                const token = response.data.data.token;
-                
+                const loginResponse = response.data.data;
+                const userData = loginResponse.user || loginResponse;
+                const token = loginResponse.token;
+
+                if (!userData || !token) {
+                  this.$message.error('登录响应数据格式错误');
+                  return;
+                }
+
                 // 将用户信息和token保存到sessionStorage
                 sessionStorage.setItem('user', JSON.stringify(userData));
                 sessionStorage.setItem('token', token);
-                
+
                 this.$router.push({path: '/index'});
                 this.$message.success('登录成功');
               } else {
@@ -102,27 +109,13 @@ export default {
             })
             .catch(error => {
               this.logining = false;
-              if (error.response) {
+              if (error.response && error.response.data) {
                 this.$message.error(error.response.data.message || '登录失败');
               } else {
                 this.$message.error('网络错误，请稍后重试');
               }
+              console.error('登录错误:', error);
             });
-          
-
-          // 暂时关闭登录验证，直接登录成功
-          // this.logining = false;
-          // 创建模拟用户数据，包含用户类型
-          const userData = {
-            id: 1,
-            name: this.ruleForm2.username,
-            email: this.ruleForm2.username + '@example.com',
-            userType: this.ruleForm2.userType
-          };
-          // 保存用户信息到sessionStorage
-          sessionStorage.setItem('user', JSON.stringify(userData));
-          this.$router.push({path: '/index'});
-          this.$message.success('登录成功');
         }else{
           console.log('error submit!');
           return false;

@@ -13,7 +13,7 @@
         <result property="email" column="email"/>
         <result property="department" column="department"/>
         <result property="position" column="position"/>
-        <result property="password" column="password"/>
+       <result property="password" column="password"/>
         <result property="userType" column="user_type"/>
         <result property="status" column="status"/>
         <result property="lastLoginTime" column="last_login_time"/>
@@ -21,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        select `id`,`name`,`gender`,`phone`,`email`,`department`,`position`,`password`,`user_type`,`status`,`last_login_time`,`create_time` from man
+        select `id`,`name`,`gender`,`phone`,`email`,`department`,`position` from man
     </sql>
 
     <!-- 查询所有人员 -->
@@ -36,7 +36,7 @@
     </select>
     
     <!-- 根据邮箱查询人员 -->
-    <select id="selectByEmail" resultMap="BaseResultMap">
+        <select id="selectByEmail" resultMap="BaseResultMap">
         <include refid="Base_Column_List"/>
         where `email` = #{email}
     </select>
@@ -62,12 +62,6 @@
             </if>
             <if test="position != null and position != ''">
                 and `position` like concat('%', #{position}, '%')
-            </if>
-            <if test="userType != null">
-                and `user_type` = #{userType}
-            </if>
-            <if test="status != null">
-                and `status` = #{status}
             </if>
         </where>
     </select>
@@ -100,6 +94,9 @@
             <if test="status != null">
                 and `status` = #{status}
             </if>
+            <if test="lastLoginTime != null">
+                and `last_login_time` = #{lastLoginTime}
+            </if>
         </where>
         <if test="page != null and size != null">
             limit #{page}, #{size}
@@ -116,9 +113,9 @@
             <if test="email != null and email != ''">`email`,</if>
             <if test="department != null and department != ''">`department`,</if>
             <if test="position != null and position != ''">`position`,</if>
-            <if test="password != null and password != ''">`password`,</if>
+           <if test="password != null and password != ''">`password`,</if>
             <if test="userType != null">`user_type`,</if>
-            <if test="status != null">`status`,</if>
+            <if test="status != null">`status`,</if>    
             <if test="lastLoginTime != null">`last_login_time`,</if>
             `create_time`,
         </trim>
@@ -129,7 +126,7 @@
             <if test="email != null and email != ''">#{email},</if>
             <if test="department != null and department != ''">#{department},</if>
             <if test="position != null and position != ''">#{position},</if>
-            <if test="password != null and password != ''">#{password},</if>
+           <if test="password != null and password != ''">#{password},</if>
             <if test="userType != null">#{userType},</if>
             <if test="status != null">#{status},</if>
             <if test="lastLoginTime != null">#{lastLoginTime},</if>
@@ -188,9 +185,9 @@
             <if test="email != null and email != ''">`email` = #{email},</if>
             <if test="department != null and department != ''">`department` = #{department},</if>
             <if test="position != null and position != ''">`position` = #{position},</if>
-            <if test="password != null and password != ''">`password` = #{password},</if>
-            <if test="userType != null">`user_type` = #{userType},</if>
-            <if test="status != null">`status` = #{status},</if>
+           <if test="password != null and password != ''">`password` = #{password},</if>
+            <if test="userType != null">`user_type` = #{userType},</if>    
+            <if test="status != null">`status` = #{status},</if> 
             <if test="lastLoginTime != null">`last_login_time` = #{lastLoginTime},</if>
         </trim>
         where `id` = #{id}

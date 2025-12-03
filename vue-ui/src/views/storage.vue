@@ -332,25 +332,26 @@ export default {
       try {
         const { startTime, endTime } = this.getTimeRange()
         
-        console.log('发送入库记录查询请求参数:', {
-          chemicalName: this.searchForm.chemicalName || null,
-          supplier: this.searchForm.supplier || null,
-          startTime,
-          endTime,
-          page: this.pagination.currentPage,
-          size: this.pagination.pageSize
-        })
+        // 构建请求参数，确保空字符串转换为null，避免后端查询问题
+        const params = {}
+        if (this.searchForm.chemicalName && this.searchForm.chemicalName.trim()) {
+          params.chemicalName = this.searchForm.chemicalName.trim()
+        }
+        if (this.searchForm.supplier && this.searchForm.supplier.trim()) {
+          params.supplier = this.searchForm.supplier.trim()
+        }
+        if (startTime) {
+          params.startTime = startTime
+        }
+        if (endTime) {
+          params.endTime = endTime
+        }
+        params.page = this.pagination.currentPage
+        params.size = this.pagination.pageSize
         
-        const response = await this.$http.get('/storage/list', {
-          params: {
-            chemicalName: this.searchForm.chemicalName || null,
-            supplier: this.searchForm.supplier || null,
-            startTime: startTime || null,
-            endTime: endTime || null,
-            page: this.pagination.currentPage,
-            size: this.pagination.pageSize
-          }
-        })
+        console.log('发送入库记录查询请求参数:', params)
+        
+        const response = await this.$http.get('/storage/list', { params })
         
         console.log('入库记录接收到的响应:', response.data)
         
@@ -397,9 +398,14 @@ export default {
         }
       } catch (error) {
         console.error('获取入库记录失败:', error)
-        this.$message.error('获取入库记录失败：' + (error.message || error))
+        if (error.response && error.response.data) {
+          this.$message.error('获取入库记录失败：' + (error.response.data.message || error.message))
+        } else {
+          this.$message.error('获取入库记录失败：' + (error.message || '网络错误'))
+        }
+      } finally {
+        this.loading = false
       }
-      this.loading = false
     },
     
     // 获取化学品列表

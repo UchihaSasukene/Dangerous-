@@ -11,6 +11,33 @@ CREATE TABLE IF NOT EXISTS `chemical` (
   UNIQUE KEY `uk_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='化学品表';
 
+-- 创建登录用户表（如果不存在）
+CREATE TABLE IF NOT EXISTS `user_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `email` varchar(100) NOT NULL COMMENT '登录邮箱',
+  `name` varchar(50) NOT NULL COMMENT '昵称/姓名',
+  `password` varchar(100) NOT NULL COMMENT 'BCrypt加密密码',
+  `user_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '用户类型：0-普通，1-管理员',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态：0-禁用，1-启用',
+  `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统登录用户表';
+
+-- 创建注册流水表（如果不存在）
+CREATE TABLE IF NOT EXISTS `user_register_record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录ID',
+  `email` varchar(100) NOT NULL COMMENT '注册邮箱',
+  `name` varchar(50) NOT NULL COMMENT '注册姓名',
+  `user_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '注册类型',
+  `register_ip` varchar(64) DEFAULT NULL COMMENT '注册IP',
+  `register_channel` varchar(32) DEFAULT 'web' COMMENT '注册渠道',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户注册流水表';
+
 -- 创建人员表（如果不存在）
 CREATE TABLE IF NOT EXISTS `man` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '人员ID',
@@ -52,6 +79,22 @@ SELECT * FROM (
   SELECT '乙酸' as name, '有机酸' as category, '中危' as danger_level, '阴凉干燥' as storage_condition, 9.00 as warning_threshold, '有腐蚀性' as description
 ) as tmp
 WHERE NOT EXISTS (SELECT 1 FROM `chemical` LIMIT 1);
+
+-- 插入登录用户测试数据（如果表为空）
+INSERT INTO `user_account` (`email`, `name`, `password`, `user_type`, `status`)
+SELECT * FROM (
+  SELECT 'admin@example.com' AS email, '系统管理员' AS name, '$2a$10$7omPvKgJo0vvV.W5AO9Mcu.buk..qS0bkkCm1cW0XkyR3O6jwxKF2' AS password, 1 AS user_type, 1 AS status UNION ALL
+  SELECT 'user@example.com' AS email, '普通用户' AS name, '$2a$10$7omPvKgJo0vvV.W5AO9Mcu.buk..qS0bkkCm1cW0XkyR3O6jwxKF2' AS password, 0 AS user_type, 1 AS status
+) AS tmp
+WHERE NOT EXISTS (SELECT 1 FROM `user_account` LIMIT 1);
+
+-- 插入注册流水测试数据（如果表为空）
+INSERT INTO `user_register_record` (`email`, `name`, `user_type`, `register_ip`, `register_channel`)
+SELECT * FROM (
+  SELECT 'admin@example.com', '系统管理员', 1, '127.0.0.1', 'init' UNION ALL
+  SELECT 'user@example.com', '普通用户', 0, '127.0.0.1', 'init'
+) AS tmp
+WHERE NOT EXISTS (SELECT 1 FROM `user_register_record` LIMIT 1);
 
 -- 插入人员测试数据（如果表为空）
 INSERT INTO `man` (`name`, `gender`, `phone`, `email`, `department`, `position`, `create_time`)

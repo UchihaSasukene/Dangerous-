@@ -114,11 +114,6 @@ const router = new Router({
 
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
-  // 直接放行所有请求
-  next();
-  
-  /*
-  // 以下是原有的登录验证逻辑，现已注释掉
   // 登录和注册页面不需要验证
   if (to.path === '/login' || to.path === '/register') {
     next();
@@ -128,21 +123,20 @@ router.beforeEach((to, from, next) => {
   // 获取用户信息和令牌
   const userStr = sessionStorage.getItem('user');
   const token = sessionStorage.getItem('token');
-  
-  if (!userStr || !token) {
-    // 未登录或令牌丢失，跳转到登录页
-    next('/login');
-    return;
-  }
+
+  // 关闭验证
+  // if (!userStr || !token) {
+  //   // 未登录或令牌丢失，跳转到登录页
+  //   Vue.prototype.$message.warning('请先登录');
+  //   next('/login');
+  //   return;
+  // }
 
   try {
     const user = JSON.parse(userStr);
-    
-    // 验证令牌的有效性（可选）
-    // 这里可以添加一个API调用来验证令牌，但为了简化，我们只检查是否存在令牌
-    
+
     // 检查是否需要管理员权限
-    if (to.meta.requiresAdmin && user.userType !== 1) {
+    if (to.meta && to.meta.requiresAdmin && user.userType !== 1) {
       // 普通用户尝试访问管理员页面，跳转到首页
       Vue.prototype.$message.error('您没有权限访问该页面');
       next('/console');
@@ -153,9 +147,11 @@ router.beforeEach((to, from, next) => {
     next();
   } catch (e) {
     console.error('解析用户信息失败', e);
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    Vue.prototype.$message.error('登录信息已失效，请重新登录');
     next('/login');
   }
-  */
 });
 
 export default router

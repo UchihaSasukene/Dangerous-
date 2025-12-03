@@ -143,6 +143,33 @@
         </template>
       </el-table-column>
     </el-table>
+    
+    <!-- 统计信息 -->
+    <el-card class="statistics-card">
+      <div slot="header">
+        <span>库存统计</span>
+      </div>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="statistics-item">
+            <div class="label">总库存量</div>
+            <div class="value">{{ statistics.totalAmount }}</div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="statistics-item">
+            <div class="label">低于预警阈值</div>
+            <div class="value warning">{{ statistics.belowThreshold }}</div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="statistics-item">
+            <div class="label">库存记录数</div>
+            <div class="value">{{ statistics.totalRecords }}</div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
 
     <!-- 分页 -->
     <div class="pagination-container">
@@ -310,32 +337,6 @@
       </div>
     </el-dialog>
 
-    <!-- 统计信息 -->
-    <el-card class="statistics-card">
-      <div slot="header">
-        <span>库存统计</span>
-      </div>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <div class="statistics-item">
-            <div class="label">总库存量</div>
-            <div class="value">{{ statistics.totalAmount }}</div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="statistics-item">
-            <div class="label">低于预警阈值</div>
-            <div class="value warning">{{ statistics.belowThreshold }}</div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="statistics-item">
-            <div class="label">库存记录数</div>
-            <div class="value">{{ statistics.totalRecords }}</div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-card>
   </div>
 </template>
 

@@ -14,11 +14,11 @@ axios.defaults.timeout = 10000; // 设置超时时间
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
-    // 从sessionStorage中获取用户信息
-    const userStr = sessionStorage.getItem('user');
-    if (userStr) {
-      // 可以在这里添加token等认证信息
-      // config.headers.Authorization = `Bearer ${JSON.parse(userStr).token}`;
+    // 从sessionStorage中获取token
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      // 添加token到请求头
+      config.headers.Authorization = `Bearer ${token}`;
     }
     console.log('发送请求:', config.url, config.params || config.data);
     return config;

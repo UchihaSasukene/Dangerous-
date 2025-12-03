@@ -12,7 +12,7 @@
         <result column="usage_purpose" property="usagePurpose"/>
         <result column="notes" property="notes"/>
         <result column="create_time" property="createTime"/>
-<!--        <result column="update_time" property="updateTime"/>-->
+       <result column="update_time" property="updateTime"/>
         <!-- 关联化学品信息 -->
         <association property="chemical" javaType="com.vueones.entity.Chemical">
             <id column="c_id" property="id"/>
@@ -33,20 +33,19 @@
         e.id as e_id, e.name as e_name
     </sql>
 
-    <!-- 条件查询列表 -->
-    <select id="selectList" resultMap="BaseResultMap">
+    <!-- 查询全部数据-->
+    <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM usage_record ur
         LEFT JOIN chemical c ON ur.chemical_id = c.id
         LEFT JOIN man e ON ur.user_id = e.id
+    </select>
+
+    <!-- 条件查询列表 -->
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT * FROM usage_record ur
         <where>
-            <if test="chemicalName != null">
-                AND c.name LIKE CONCAT('%', #{chemicalName, jdbcType=VARCHAR}, '%')
-            </if>
-            <if test="userName != null">
-                AND e.name LIKE CONCAT('%', #{userName, jdbcType=VARCHAR}, '%')
-            </if>
             <if test="startTime != null">
                 AND ur.usage_time &gt;= #{startTime, jdbcType=TIMESTAMP}
             </if>

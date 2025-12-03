@@ -1,16 +1,8 @@
 package com.vueones.entity;
 
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "id",
-    scope = StorageRecord.class
-)
 public class StorageRecord {
     private Integer id;
     private Integer chemicalId;

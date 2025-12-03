@@ -5,7 +5,6 @@ import com.vueones.entity.Chemical;
 import com.vueones.service.IStorageRecordService;
 import com.vueones.service.IInventoryService;
 import com.vueones.service.IChemicalService;
-import com.vueones.mapper.ChemicalMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -52,9 +51,6 @@ public class StorageRecordController {
     private IInventoryService inventoryService;
     
     @Autowired
-    private ChemicalMapper chemicalMapper;
-    
-    @Autowired
     private IChemicalService chemicalService;
     
     /**
@@ -81,7 +77,11 @@ public class StorageRecordController {
         result.put("createTime", record.getCreateTime());
         
         // 关联对象
-        Chemical chemical = chemicalService.selectChemicalById(record.getChemicalId());
+        Chemical chemical = record.getChemical();
+        // 如果Mapper未加载关联对象，再从服务层补充
+        if (chemical == null && record.getChemicalId() != null) {
+            chemical = chemicalService.selectChemicalById(record.getChemicalId());
+        }
         if (chemical != null) {
             Map<String, Object> chemicalMap = new HashMap<>();
             chemicalMap.put("id", chemical.getId());

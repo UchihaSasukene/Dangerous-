@@ -1,0 +1,24 @@
+-- 登录用户主表
+CREATE TABLE IF NOT EXISTS user_account (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
+    email VARCHAR(100) NOT NULL COMMENT '登录邮箱',
+    name VARCHAR(50) NOT NULL COMMENT '昵称/姓名',
+    password VARCHAR(100) NOT NULL COMMENT 'BCrypt加密密码',
+    user_type TINYINT NOT NULL DEFAULT 0 COMMENT '用户类型：0-普通，1-管理员',
+    status TINYINT NOT NULL DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
+    last_login_time DATETIME DEFAULT NULL COMMENT '最后登录时间',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE KEY uk_user_account_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统登录用户表';
+
+-- 注册记录表
+CREATE TABLE IF NOT EXISTS user_register_record (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '记录ID',
+    email VARCHAR(100) NOT NULL COMMENT '注册邮箱',
+    name VARCHAR(50) NOT NULL COMMENT '注册姓名',
+    user_type TINYINT NOT NULL DEFAULT 0 COMMENT '注册类型',
+    register_ip VARCHAR(64) DEFAULT NULL COMMENT '注册IP',
+    register_channel VARCHAR(32) DEFAULT 'web' COMMENT '注册渠道',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户注册流水表';

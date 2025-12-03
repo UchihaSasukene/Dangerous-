@@ -17,7 +17,7 @@ public class ManServiceImpl implements IManService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    
     /**
      * 查询Man数据，支持分页和条件查询
      * @param params 查询参数
@@ -105,52 +105,4 @@ public class ManServiceImpl implements IManService {
         return manMapper.updateLastLoginTime(id);
     }
     
-    @Override
-    public Man login(String email, String password, Integer userType) {
-        // 通过邮箱查询用户
-        Man man = manMapper.selectByEmail(email);
-        
-        // 用户不存在或状态禁用
-        if (man == null || (man.getStatus() != null && man.getStatus() == 0)) {
-            return null;
-        }
-        
-        // 用户类型不匹配
-        if (userType != null && man.getUserType() != null && !man.getUserType().equals(userType)) {
-            return null;
-        }
-        
-        // 验证密码
-        if (man.getPassword() != null && passwordEncoder.matches(password, man.getPassword())) {
-            // 更新最后登录时间
-            manMapper.updateLastLoginTime(man.getId());
-            return man;
-        }
-        
-        return null;
-    }
-    
-    @Override
-    public boolean register(Man man) {
-        // 检查邮箱是否已存在
-        Man existingMan = manMapper.selectByEmail(man.getEmail());
-        if (existingMan != null) {
-            return false;
-        }
-        
-        // 设置默认值
-        if (man.getUserType() == null) {
-            man.setUserType(0); // 默认普通用户
-        }
-        if (man.getStatus() == null) {
-            man.setStatus(1); // 默认启用
-        }
-        
-        // 加密密码
-        if (man.getPassword() != null) {
-            man.setPassword(passwordEncoder.encode(man.getPassword()));
-        }
-        
-        return manMapper.insert(man) > 0;
-    }
 }

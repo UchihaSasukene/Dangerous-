@@ -55,22 +55,6 @@ public interface IManService {
     int updateLastLoginTime(Integer id);
     
     /**
-     * 用户登录认证
-     * @param email 邮箱
-     * @param password 密码
-     * @param userType 用户类型
-     * @return 认证成功返回用户信息，失败返回null
-     */
-    Man login(String email, String password, Integer userType);
-    
-    /**
-     * 用户注册
-     * @param man 用户信息
-     * @return 注册成功返回true，失败返回false
-     */
-    boolean register(Man man);
-
-    /**
      * 获取符合条件的记录总数
      * @param params 查询参数
      * @return 记录总数

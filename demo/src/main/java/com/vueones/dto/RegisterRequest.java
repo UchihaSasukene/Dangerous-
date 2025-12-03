@@ -9,6 +9,8 @@ public class RegisterRequest {
     private String name;
     private String password;
     private Integer userType;
+    private String registerIp;
+    private String registerChannel;
     
     public String getEmail() {
         return email;
@@ -42,12 +44,31 @@ public class RegisterRequest {
         this.userType = userType;
     }
     
+    public String getRegisterIp() {
+        return registerIp;
+    }
+
+    public void setRegisterIp(String registerIp) {
+        this.registerIp = registerIp;
+    }
+
+    public String getRegisterChannel() {
+        return registerChannel;
+    }
+
+    public void setRegisterChannel(String registerChannel) {
+        this.registerChannel = registerChannel;
+    }
+
     @Override
     public String toString() {
         return "RegisterRequest{" +
                 "email='" + email + '\'' +
                 ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", userType=" + userType +
+                ", registerIp='" + registerIp + '\'' +
+                ", registerChannel='" + registerChannel + '\'' +
                 '}';
     }
 } 

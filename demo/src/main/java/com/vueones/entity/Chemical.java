@@ -1,14 +1,8 @@
 package com.vueones.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class, 
-    property = "id",
-    scope = Chemical.class
-)
 public class Chemical {
     private Integer id;
     private String name;
@@ -19,6 +13,7 @@ public class Chemical {
     private String description;
     
     // 反向引用StorageRecord
+    @JsonIgnore
     private List<StorageRecord> storageRecords;
 
     public Integer getId() {
